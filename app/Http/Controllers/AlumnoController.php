@@ -58,11 +58,10 @@ class AlumnoController extends Controller
 
         public function edit(Alumno $alumno)
     {
-
+        $alumno->load('idiomas');
         $idiomas_disponibles=config("idiomas.idiomas");
         $alumnoJson = $alumno->toJson();
         $idiomasDisponiblesJson=json_encode($idiomas_disponibles);
-
         return view ("alumnos.edit", compact("alumnoJson","idiomasDisponiblesJson"));
 
     }
@@ -70,8 +69,23 @@ class AlumnoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAlumnoRequest $request, Alumno $alumno)
+    public function update(UpdateAlumnoRequest $request, int $id)
     {
+
+
+        $alumno = Alumno::findOrFail($id);
+
+        $alumno->update($request->all());
+        $datos = $request->input();
+        info ("request $datos");
+        info ("alumno $alumno");
+
+        // Aquí deberías manejar la actualización de los idiomas relacionados
+
+        // Esto podría implicar eliminar idiomas existentes, agregar nuevos, etc.
+
+
+        return response()->json(['message' => 'Alumno actualizado con éxito', 'data' => $alumno]);
         //
     }
 

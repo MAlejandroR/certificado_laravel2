@@ -1,3 +1,10 @@
 <x-layouts.layout>
-    <div id="react-app"></div>
+
+{{--    @dump($alumnoJson)--}}
+{{--    @dump($idiomasDisponiblesJson)--}}
+
+    <div id="react-editar-alumno" data-alumnoInicial="{{$alumnoJson}}"
+    data-idiomasDisponibles="{{$idiomasDisponiblesJson}}">
+
+    </div>
 </x-layouts.layout>

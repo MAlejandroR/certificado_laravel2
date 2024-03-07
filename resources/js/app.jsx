@@ -2,14 +2,30 @@ import './bootstrap';
 import '../css/app.css';
 
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import {createRoot} from 'react-dom/client';
 import EditarAlumno from './Pages_React/EditarAlumno';
 
 
 
-// Encuentra un elemento en tu HTML donde quieras montar el componente de React
-const el = document.getElementById('react-app');
-// Asegúrate de que las variables están definidas
-    if (document.getElementById('react-app') && typeof alumnoInicial !== 'undefined' && typeof idiomasDisponibles !== 'undefined') {
-        ReactDOM.render(<EditarAlumno alumnoInicial={JSON.parse(alumnoInicial)} idiomasDisponibles={JSON.parse(idiomasDisponibles)} />, document.getElementById('react-app'));
-    }
+const editarAlumnoEl = document.getElementById('react-editar-alumno');
+console.log("estoy en app con editar alumno "+editarAlumnoEl.title)
+
+// Asegúrate de que el elemento existe
+
+if (editarAlumnoEl) {
+    const alumnoInicial =JSON.parse( editarAlumnoEl.getAttribute('data-alumnoInicial'));
+    const idiomasDisponibles = JSON.parse(editarAlumnoEl.getAttribute('data-idiomasDisponibles'));
+    // console.log ("En app.jsx con alumnoInicial "+alumnoInicial);
+
+    // const idiomasDisponibles = JSON.parse(editarAlumnoEl.getAttribute('data-idiomasdisponibles'));
+
+    // Utiliza createRoot para montar el componente
+    const root = createRoot(editarAlumnoEl); // Crea un root
+
+    root.render(
+        <EditarAlumno
+            alumnoInicial={alumnoInicial}
+            idiomasDisponibles={idiomasDisponibles}
+        />
+    );
+}
