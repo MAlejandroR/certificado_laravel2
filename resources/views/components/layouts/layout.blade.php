@@ -14,14 +14,16 @@
 
 </head>
 <body>
+<div id="root">
 
-<x-header/>
-<x-nav/>
+    <x-header/>
+    <x-nav/>
 
-<main class="h-65v bg-main ">
-    {{$slot}}
-</main>
-<x-footer/>
+    <main class="h-65v bg-main ">
+        {{$slot}}
+    </main>
+    <x-footer/>
+</div>
 </body>
 </html>
 

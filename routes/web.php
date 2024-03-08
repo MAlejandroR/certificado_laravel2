@@ -14,7 +14,7 @@ use App\Http\Controllers\AlumnoController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::view("main", "main");
+Route::get("main",\App\Http\Controllers\MainController::class);
 //Route::get("main", function(){
 //    return view ("main");
 //});

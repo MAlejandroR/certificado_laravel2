@@ -1,7 +1,9 @@
 <x-layouts.layout >
-    <div id="react-root">
-        <Tabla />
-    </div>
+    <h1>Un componentes</h1>
+    <div id="react-tabla1" data-numero="{{$n}}"></div>
+    <h2> Otro componentes</h2>
+    <div id="react-tabla2"></div>
+
 
 {{--    <div class="hero min-h-full"--}}
 {{--         style="background-image: url(https://daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.jpg);">--}}

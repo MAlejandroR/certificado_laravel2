@@ -4,32 +4,47 @@ export default function EditarAlumno({alumnoInicial, idiomasDisponibles}) {
 
 
     const actualizarAlumno=async (id)=>{
-        const url = `http://localhost:8000/alumnos/${id}`; // Cambia esto por la URL real de tu API
-        console.log ("url "+url);
-        const alumnoData = {
-            nombre: alumnoInicial.nombre, // Asumiendo que estas propiedades existen en tu estado
-            apellidos: alumnoInicial.apellidos,
-            direccion: alumnoInicial.direccion,
-            idiomas: idiomas, // Este es el estado que contiene los nombres de los idiomas
-        };
+        // const url = `http://localhost:8000/alumnos/${id}`; // Cambia esto por la URL real de tu API
+
+        const base_url = window.location.origin; // Obtiene la URL base
+        const url = `${base_url}/alumnos/${id}`; // Construye la URL específica
+
+        const formData = new FormData();
+        formData.append('_method', 'PUT');
+        formData.append('nombre',nombre);
+        formData.append('apellidos',apellidos);
+        formData.append('direccion',direccion);
+        formData.append('telefono',telefono);
+        formData.append('email',email);
+        idiomas.forEach(idioma=>{
+            formData.append('idiomas[]',idioma);
+        })
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
+
+
+
         // Obtener el token CSRF del meta tag
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
 
         try {
             const response = await fetch(url, {
-                method: 'PUT', // o 'POST', según corresponda a tu API
+                method: 'POST', // o 'POST', según corresponda a tu API
                 headers: {
-                    'Content-Type': 'application/json',
+                    // 'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': csrfToken, // Incluir el token CSRF aquí
                     // Asegúrate de incluir cualquier otro header necesario, como tokens de autenticación
                 },
-                body: JSON.stringify(alumnoData),
+                body: formData,
+                redirect: 'follow'
             });
 
             if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
+                throw new Error(`Error: ${response}`);
             }
+            window.location= `${base_url}/alumnos`;
 
             const responseData = await response.json();
             console.log('Datos actualizados con éxito:', responseData);
@@ -47,6 +62,8 @@ export default function EditarAlumno({alumnoInicial, idiomasDisponibles}) {
     const [nombre, setNombre] = useState(alumnoInicial.nombre);
     const [apellidos, setApellidos] = useState(alumnoInicial.apellidos);
     const [direccion, setDireccion] = useState(alumnoInicial.direccion);
+    const [telefono, setTelefono] = useState(alumnoInicial.telefono);
+    const [email, setEmail] = useState(alumnoInicial.email);
 
     // Estado para almacenar y actualizar los idiomas del alumno
     const [idiomas, setIdiomas] = useState([]);
@@ -107,6 +124,18 @@ export default function EditarAlumno({alumnoInicial, idiomasDisponibles}) {
                                 <input
                                     onChange={e => setDireccion(e.target.value)}
                                     type="text" name="direccion" value={direccion}
+                                       className="input input-bordered input-info w-full max-w-xs"/>  <label className="label">
+                                    <span className="label-text">Teléfono:</span>
+                                </label>
+                                <input
+                                    onChange={e => setTelefono(e.target.value)}
+                                    type="text" name="telefono" value={telefono}
+                                       className="input input-bordered input-info w-full max-w-xs"/>  <label className="label">
+                                    <span className="label-text">Email:</span>
+                                </label>
+                                <input
+                                    onChange={e => setEmail(e.target.value)}
+                                    type="text" name="email" value={email}
                                        className="input input-bordered input-info w-full max-w-xs"/>
                             </fieldset>
                         </div>

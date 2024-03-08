@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAlumnoRequest;
 use App\Http\Requests\UpdateAlumnoRequest;
 use App\Models\Alumno;
+use Illuminate\Http\Request;
+
+
 
 class AlumnoController extends Controller
 {
@@ -60,6 +63,7 @@ class AlumnoController extends Controller
     {
         $alumno->load('idiomas');
         $idiomas_disponibles=config("idiomas.idiomas");
+        //Necesito serializarlo para pasarlo al js
         $alumnoJson = $alumno->toJson();
         $idiomasDisponiblesJson=json_encode($idiomas_disponibles);
         return view ("alumnos.edit", compact("alumnoJson","idiomasDisponiblesJson"));
@@ -69,23 +73,28 @@ class AlumnoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAlumnoRequest $request, int $id)
+    public function update(Request $request, int $id)
     {
-
+        info ("Estoy en update");
 
         $alumno = Alumno::findOrFail($id);
-
-        $alumno->update($request->all());
+        info($alumno);
         $datos = $request->input();
-        info ("request $datos");
-        info ("alumno $alumno");
+        info ($datos);
+        $alumno->update($datos);
+        info ($alumno);
+
+
+
+        $alumnos = Alumno::paginate(10);
+
+        return view ("alumnos.listado",["alumnos"=>$alumnos]);
 
         // Aquí deberías manejar la actualización de los idiomas relacionados
 
         // Esto podría implicar eliminar idiomas existentes, agregar nuevos, etc.
 
 
-        return response()->json(['message' => 'Alumno actualizado con éxito', 'data' => $alumno]);
         //
     }
 
